@@ -1,0 +1,6 @@
+@dotnet08_blazor_web_HostAddress = http://localhost:5190
+
+GET {{dotnet08_blazor_web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
