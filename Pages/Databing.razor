@@ -1,0 +1,73 @@
+@page "/data-binding"
+
+<div class="container">
+    <h1>Data binding</h1>
+
+    @{
+        //Code C#
+        string name = "Khải 123";
+        
+    }
+    
+    <p id="title" class="badge bg-dark">@title</p>
+    
+    <p class="badge bg-danger">@showMessage(name)</p>
+    
+    <button class="btn btn-danger" @onclick="@(e => changeName("Chương"))" >ChangeName</button>
+    <div class="form-group">
+        <label for="newtitle" class="form-label">New title</label>
+        <input class="form-control w-25" id="newtitle" @oninput="@( e => changeTitle(e) )" >
+    </div>
+    <hr />
+    <h3>Twoway binding</h3>
+    @{
+        string urlImage = @$"https://i.pravatar.cc?u={productModel.name}";
+    }
+    <div class="card w-25">
+        <img src="@urlImage" />
+        <div class="card-body">
+            <div class="card-title">@productModel.name </div> 
+            <div class="card-text">@productModel.price </div>
+        </div>
+    </div>
+    <div class="form-group"> 
+        <label class="form-label"> Id </label>
+        <input class="form-control" @bind="@productModel.id" >
+    </div>
+    <div class="form-group"> 
+        <label class="form-label"> Name </label>
+        <input class="form-control" @bind="@productModel.name" >
+    </div>
+    <div class="form-group"> 
+        <label class="form-label"> Price </label>
+        <input class="form-control" @bind="@productModel.price" >
+    </div>
+
+</div>
+
+@code {
+    //MVVM -> Dữ liệu xuất phát từ model -> hiển thị sang view -> nếu model thay đổi thì view thay đổi
+    //class model của component
+    private ProductModel productModel {get;set;} = new ProductModel() {
+        id=1, name="111 Iphone", price = 1000
+    }; 
+    private string title { get; set; } = "Cybersoft";
+
+    private string showMessage(string mess)
+    {
+        return @$"Hello {mess}";
+    }
+
+    private void changeName(string newName)
+    {
+        title = newName;
+        
+    }
+
+   private void changeTitle(ChangeEventArgs e)
+    {
+        title = e.Value?.ToString() ?? "";
+    }
+
+
+}
