@@ -1,0 +1,89 @@
+@page "/course-registration"
+
+
+<div class="container">
+    <div class="card shadow-sm mx-auto my-4" style="max-width: 600px;">
+        <div class="card-body">
+            <h4 class="text-center fw-bold mb-4">Course Registration Form</h4>
+
+            <EditForm Model="@registration" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name *</label>
+                    <InputText id="fullName" class="form-control" placeholder="Enter your full name" @bind-Value="registration.FullName" />
+                    @* <input id="fullName" class="form-control" placeholder="Enter your full name" @bind="registration.FullName" /> *@
+                    <ValidationMessage For="@(() => registration.FullName)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email *</label>
+                    <InputText id="email" class="form-control" placeholder="Enter your email" @bind-Value="registration.Email" />
+                    <ValidationMessage For="@(() => registration.Email)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number *</label>
+                    <InputText id="phone" class="form-control" placeholder="Enter your phone number" @bind-Value="registration.PhoneNumber" />
+                    <ValidationMessage For="@(() => registration.PhoneNumber)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="course" class="form-label">Select Course *</label>
+                    <InputSelect id="course" class="form-select" @bind-Value="registration.Course">
+                        <option value="">Choose...</option>
+                        @foreach (var c in courses)
+                        {
+                            <option value="@c">@c</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => registration.Course)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label d-block">Study Mode *</label>
+                    <InputRadioGroup @bind-Value="registration.StudyMode">
+                        <div class="form-check form-check-inline">
+                            <InputRadio id="online" class="form-check-input" Value="@("Online")" />
+                            <label class="form-check-label" for="online">Online</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <InputRadio id="offline" class="form-check-input" Value="@("Offline")" />
+                            <label class="form-check-label" for="offline">Offline</label>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Preferred Start Date *</label>
+                    <InputDate id="startDate" class="form-control" @bind-Value="registration.StartDate" />
+                    <ValidationMessage For="@(() => registration.StartDate)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="comments" class="form-label">Comments or Notes</label>
+                    <InputTextArea id="comments" class="form-control" rows="4" placeholder="Enter any additional information" @bind-Value="registration.Comments" />
+                </div>
+
+                <div class="form-check mb-3">
+                    <InputCheckbox id="agree" class="form-check-input" @bind-Value="registration.AgreeTerms" />
+                    <label class="form-check-label" for="agree">I agree to the terms and conditions *</label>
+                    <ValidationMessage For="@(() => registration.AgreeTerms)" class="text-danger small ms-1" />
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Register</button>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegistrationModel registration = new RegistrationModel();
+    private List<string> courses = new List<string> { "Course 1", "Course 2", "Course 3" };
+
+    private void HandleValidSubmit()
+    {
+        // Handle form submission logic here
+        Console.WriteLine($"model: {JsonSerializer.Serialize(registration)}");
+    }
+}

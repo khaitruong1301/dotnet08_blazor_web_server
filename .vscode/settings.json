@@ -1,1 +1,33 @@
-{}
+{
+  // Bật Emmet + gợi ý thẻ HTML trong file .razor / .cshtml
+  "emmet.includeLanguages": {
+    "razor": "html",
+    "aspnetcorerazor": "html"
+  },
+  "emmet.showExpandedAbbreviation": "always",
+  "emmet.showSuggestionsAsSnippets": false,
+  "emmet.triggerExpansionOnTab": true,
+
+  // Tự đóng thẻ khi gõ ">" (extension Auto Close Tag) — giữ danh sách mặc định + thêm razor
+  "auto-close-tag.activationOnLanguage": [
+    "xml", "php", "blade", "ejs", "jinja", "javascript", "javascriptreact",
+    "typescript", "typescriptreact", "plaintext", "markdown", "vue", "liquid",
+    "erb", "lang-cfml", "cfml", "HTML (EEx)", "HTML (Eex)", "plist",
+    "razor", "aspnetcorerazor"
+  ],
+
+  "[razor][aspnetcorerazor]": {
+    // Ẩn snippet (prop, for, if...) để gợi ý HTML/Emmet hiện lên trên
+    "editor.suggest.showSnippets": false,
+    "editor.snippetSuggestions": "none",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.suggestSelection": "first",
+    // Tắt tự chèn "<>" của language config razor, để gõ "<div>" tự ra "</div>" như HTML
+    "editor.autoClosingBrackets": "never",
+    "editor.linkedEditing": true
+  }
+}

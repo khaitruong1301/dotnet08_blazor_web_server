@@ -1,0 +1,73 @@
+
+@layout HomePageMaster
+@page "/blazor-form"
+
+<div class="container">
+    <EditForm Model="@registerModel" OnValidSubmit="handleSubmit">
+        <h3>Register</h3>
+        <DataAnnotationsValidator />  @* Enables validation based on data annotations *@
+        <div class="alert alert-danger">
+            @* <ValidationSummary class="text-danger text" /> *@
+        </div>
+
+        <div class="form-group my-2">
+            <label for="username" class="form-label">Username</label>
+            <input class="form-control" name="username" id="username" @bind="registerModel.Username" />
+            <ValidationMessage For="@(() => registerModel.Username)" class="text-danger text" />
+        </div>
+        <div class="form-group my-2">
+            <label for="password" class="form-label">Password</label>
+            <input class="form-control" type="password" name="password" id="password" @bind="registerModel.Password" />
+            <ValidationMessage For="@(() => registerModel.Password)" class="text-danger text" />
+        </div>
+        <div class="form-group my-2">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input class="form-control" type="password" name="confirmPassword" id="confirmPassword" @bind="registerModel.ConfirmPassword" />
+            <ValidationMessage For="@(() => registerModel.ConfirmPassword)" class="text-danger text" />
+        </div>
+
+        <div class="form-group my-2">
+            <label for="fullName" class="form-label">FullName</label>
+            <input class="form-control" name="fullName" id="fullName" @bind="registerModel.FullName" />
+            <ValidationMessage For="@(() => registerModel.FullName)" class="text-danger text" />
+        </div>
+        <div class="form-group my-2">
+            <label for="email" class="form-label">Email</label>
+            <input class="form-control" name="email" id="email" @bind="registerModel.Email" />
+            <ValidationMessage For="@(() => registerModel.Email)" class="text-danger text" />
+        </div>
+        <div class="form-group my-2">
+            <label for="phone" class="form-label">Phone</label>
+            <input class="form-control" name="phone" id="phone" @bind="registerModel.Phone" />
+            <ValidationMessage For="@(() => registerModel.Phone)" class="text-danger text" />
+        </div>
+        <div class="form-group my-2">
+            <label for="gender" class="form-label">Giới tính</label>
+            <select class="form-control" name="gender" id="gender" @bind="registerModel.Gender">
+                <option value="male" selected>Nam</option>
+                <option value="female">Nữ</option>
+                <option value="other">Khác</option>
+            </select>
+            <ValidationMessage For="@(() => registerModel.Gender)" class="text-danger text" />
+        </div>
+
+        <div class="form-group my-2">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+
+
+
+    </EditForm>
+
+
+</div>
+@code {
+    private RegisterModel registerModel = new RegisterModel();
+
+    private void handleSubmit()
+    {
+        Console.WriteLine("123");
+        // Handle form submission logic here
+        Console.WriteLine(@$"{JsonSerializer.Serialize(registerModel)}");
+    }
+}
