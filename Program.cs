@@ -1,10 +1,18 @@
+using System.Diagnostics.Metrics;
+using dotnet08_blazor_web.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 //Thêm thư viện server cho blazor server
 //DI Các thư viện
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(); 
+//Thư viện gọi api 
+builder.Services.AddHttpClient();
 
+
+
+//DI service quản lý state
+builder.Services.AddScoped<CounterStateService>();
 
 
 

@@ -1,0 +1,59 @@
+@page "/detail-product/{id}"
+@inject HttpClient _httpClient;
+<div class="container">
+    @if (productDetailResponse != null)
+    {
+            <h3>id:@id</h3>
+        <div class="card w-25">
+            <img  src="@productDetailResponse.Content.Image"  alt="@productDetailResponse.Content.Name" />
+            <div class="card-body">
+
+                <h4>@productDetailResponse.Content.Name</h4>
+            </div>
+
+        </div>
+    }
+
+    <NavLink href="/detail-product/1" class="btn btn-primary my-2">
+        get prod 1 
+    </NavLink>
+ <NavLink href="/detail-product/2" class="btn btn-primary my-2">
+        get prod 2 
+    </NavLink>
+ <NavLink href="/detail-product/3" class="btn btn-primary my-2">
+        get prod 3 
+    </NavLink>
+
+    
+
+
+</div>
+
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    private ProductDetailResponseDto? productDetailResponse;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProductDetailById();
+    }
+
+    private async Task GetProductDetailById()
+    {
+        
+        var response = await _httpClient.GetFromJsonAsync<ProductDetailResponseDto>($"https://shop.cyberlearn.vn/api/Product/getbyid?id={id}");
+        productDetailResponse = response;
+        Console.WriteLine(@$"data: {JsonSerializer.Serialize(response)}");
+    }
+
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        //Hàm này kích hoạt khi tham số parameter thay đổi
+        await base.SetParametersAsync(parameters);
+        await GetProductDetailById();
+    }
+}

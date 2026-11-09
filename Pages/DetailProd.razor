@@ -1,0 +1,98 @@
+@page "/detail-prod/{id:int}"
+
+
+<div class="container py-5">
+	<nav aria-label="breadcrumb" class="mb-4">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
+			<li class="breadcrumb-item"><a href="#" class="text-decoration-none">Sản phẩm</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
+		</ol>
+	</nav>
+	<div class="row g-5">
+		<div class="col-lg-6">
+			<div class="bg-light rounded-4 p-4 mb-3 text-center">
+				<img src="@sanPhamChiTiet?.image" class="img-fluid rounded-3" alt="Hình ảnh sản phẩm">
+			</div>
+			<div class="row g-3">
+				<div class="col-3"><img src="https://placehold.co/180x140/e2e8f0/64748b?text=Anh+1" class="img-fluid rounded-3 border" alt="Ảnh sản phẩm 1"></div>
+				<div class="col-3"><img src="https://placehold.co/180x140/e2e8f0/64748b?text=Anh+2" class="img-fluid rounded-3 border" alt="Ảnh sản phẩm 2"></div>
+				<div class="col-3"><img src="https://placehold.co/180x140/e2e8f0/64748b?text=Anh+3" class="img-fluid rounded-3 border" alt="Ảnh sản phẩm 3"></div>
+				<div class="col-3"><img src="https://placehold.co/180x140/e2e8f0/64748b?text=Anh+4" class="img-fluid rounded-3 border" alt="Ảnh sản phẩm 4"></div>
+			</div>
+		</div>
+
+
+
+		<div class="col-lg-6">
+			<span class="badge text-bg-success mb-3">Còn hàng</span>
+			<h1 class="display-6 fw-bold mb-3">@sanPhamChiTiet?.name</h1>
+			<div class="d-flex align-items-center gap-2 mb-3">
+				<span class="text-warning" aria-label="Đánh giá 5 trên 5">★★★★★</span>
+				<span class="text-muted">4.9</span>
+				<span class="text-muted">|</span>
+				<a href="#reviews" class="text-decoration-none">120 đánh giá</a>
+			</div>
+			<p class="text-secondary mb-4">Mô tả ngắn gọn về sản phẩm, nêu bật công dụng và những giá trị thiết thực dành cho bạn.</p>
+
+			<div class="d-flex align-items-baseline gap-3 mb-4">
+				<span class="h2 fw-bold text-danger mb-0">@sanPhamChiTiet?.price</span>
+				<span class="text-muted text-decoration-line-through">1.590.000₫</span>
+				<span class="badge text-bg-danger">-19%</span>
+			</div>
+
+			<hr class="my-4">
+
+			<div class="mb-4">
+				<h2 class="h6 fw-bold mb-3">Thông tin sản phẩm</h2>
+				<ul class="list-unstyled text-secondary mb-0">
+					<li class="mb-2">✓ Chất liệu cao cấp, bền đẹp</li>
+					<li class="mb-2">✓ Thiết kế hiện đại, dễ sử dụng</li>
+					<li class="mb-2">✓ Bảo hành chính hãng 12 tháng</li>
+					<li>✓ Đổi trả trong vòng 7 ngày</li>
+				</ul>
+			</div>
+
+			<div class="d-flex align-items-center gap-3 mb-4">
+				<label for="quantity" class="form-label fw-semibold mb-0">Số lượng</label>
+				<input id="quantity" type="number" class="form-control w-auto" value="1" min="1" aria-label="Số lượng">
+			</div>
+
+			<div class="d-grid d-sm-flex gap-3">
+				<button type="button" class="btn btn-primary btn-lg flex-grow-1">Thêm vào giỏ hàng</button>
+				<button type="button" class="btn btn-outline-danger btn-lg">♡ Yêu thích</button>
+			</div>
+
+			<div class="row g-3 mt-4 text-center">
+				<div class="col-4"><div class="border rounded-3 p-3 h-100"><div class="fw-semibold">Giao hàng</div><small class="text-muted">Toàn quốc</small></div></div>
+				<div class="col-4"><div class="border rounded-3 p-3 h-100"><div class="fw-semibold">Thanh toán</div><small class="text-muted">An toàn</small></div></div>
+				<div class="col-4"><div class="border rounded-3 p-3 h-100"><div class="fw-semibold">Hỗ trợ</div><small class="text-muted">24/7</small></div></div>
+			</div>
+		</div>
+	</div>
+
+	<section class="mt-5 pt-4 border-top" id="reviews">
+		<h2 class="h3 fw-bold mb-3">Mô tả sản phẩm</h2>
+		<p class="text-secondary mb-0">Khám phá sản phẩm với thiết kế tinh tế và chất lượng đáng tin cậy. Thông tin chi tiết, hình ảnh và chính sách có thể được cập nhật theo sản phẩm thực tế.</p>
+	</section>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    public SanPhamDTO? sanPhamChiTiet { get; set; } = new SanPhamDTO();
+        public List<SanPhamDTO> products = new List<SanPhamDTO>()
+    {
+        new SanPhamDTO() { id = 1, name = "Product 1",image ="/img/black-car.jpg", price = 100 },
+        new SanPhamDTO() { id = 2, name = "Product 2", image ="/img/steel-car.jpg", price = 200 },
+        new SanPhamDTO() { id = 3, name = "Product 3", image ="/img/red-car.jpg", price = 300 }
+    };
+    protected override async Task OnInitializedAsync()
+    {
+        //tự kích hoạt khi load component
+        sanPhamChiTiet = products.SingleOrDefault(sp => sp.id == id);
+    }
+
+}

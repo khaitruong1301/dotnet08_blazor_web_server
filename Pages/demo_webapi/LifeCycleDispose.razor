@@ -1,0 +1,25 @@
+@page "/life-cycle-dispose"
+
+@implements IDisposable
+
+<h3>Life Cycle Dispose Demo</h3>
+
+@code {
+    Timer timer;
+    protected override async Task OnInitializedAsync()
+    {
+        timer = new Timer((state) =>
+        {
+            Console.WriteLine("Timer tick");
+        }, null, 0, 1000);  
+    }
+
+
+
+    public void Dispose()
+    {
+        //lifecycle huỷ các tài nguyên khi component bị dispose
+        Console.WriteLine("Component is being disposed");
+        timer?.Dispose();
+    }
+}

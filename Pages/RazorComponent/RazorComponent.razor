@@ -1,0 +1,63 @@
+@page "/razor-component"
+
+<div class="container">
+    <h3>Razor Component</h3>
+    <div class="row">
+        @foreach (ProductInfoModal product in products)
+        {
+            <div class="col-md-4">
+                <ProductCard prod="@product" eventViewDetail="ShowProductDetails" eventShowProduct="ShowInfoProduct"/>
+                @* <a data-bs-toggle="modal" data-bs-target="#productModal"  href="#" class="btn btn-primary" @onclick="@((e) => ShowInfoProduct(product))">Buy Now</a> *@
+            </div>
+        }
+
+    </div>
+
+    @*Modal bs 5*@
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Product @ProductModal.name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <img src="https://i.pravatar.cc?u=@ProductModal.id" alt="..." class="w-100" />
+                    <!-- Product details go here -->
+                    <p>Name: @ProductModal.name</p>
+                    <p>Price: $@ProductModal.price</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@code {
+    private List<ProductInfoModal> products = new List<ProductInfoModal>(){
+        new ProductInfoModal{id = 1, name = "Product 1", price = 100},
+        new ProductInfoModal{id = 2, name = "Product 2", price = 200},
+        new ProductInfoModal{id = 3, name = "Product 3", price = 300}
+    };
+
+    private string productName { get; set; } = "";
+
+    private ProductInfoModal ProductModal { get; set; } = new ProductInfoModal();
+
+    private void ShowProductDetails(string name)
+    {
+        productName = name;
+    }
+
+    private void ShowInfoProduct(ProductInfoModal productClick)
+    {
+        ProductModal = productClick;
+    }
+
+}

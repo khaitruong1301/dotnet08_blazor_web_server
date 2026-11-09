@@ -1,0 +1,28 @@
+@page "/demo-state-management"
+@inject CounterStateService _counterStateService
+
+@implements IDisposable
+
+<div class="container">
+    <h3>Demo State Management</h3>
+    <p>Current counter value: @_counterStateService.counter</p>
+    <h1>@_counterStateService.counter</h1>
+    <button class="btn btn-primary" @onclick="@_counterStateService.IncrementCounter">Increment</button>
+    <button class="btn btn-danger" @onclick="@_counterStateService.DecrementCounter">Decrement</button>
+</div>
+
+
+@code{
+
+    protected override void OnInitialized()
+    {
+        //Khi hàm bên .cs gọi setState thì giao diện trigger StateHasChanged
+        _counterStateService.OnChange += StateHasChanged;
+    }
+    
+
+    public void Dispose()
+    {   //Ngưng theo dõi state khi component bị hủy
+        _counterStateService.OnChange -= StateHasChanged;
+    }
+}

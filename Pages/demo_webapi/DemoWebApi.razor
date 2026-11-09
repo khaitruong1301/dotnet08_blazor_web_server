@@ -1,0 +1,58 @@
+@page "/demo-webapi"
+
+@inject HttpClient _httpClient;
+
+<div class="container">
+    <h3>Demo Web API</h3>
+    <div class="row">
+        @if (productResponse != null)
+        {
+            @foreach (var item in productResponse.Content)
+            {
+                <div class="col-md-4 my-2">
+                    <div class="card">
+                        <img src="@item.Image" class="card-img-top" alt="Demo Web API">
+                        <div class="card-body">
+                            <h3 class="card-title">@item.Name</h3>
+                            <p class="card-text">@item.ShortDescription</p>
+                            <a href="/detail-product/@item.Id" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <button class="btn btn-primary mt-2" @onclick="GetData">Get data</button>
+
+
+</div>
+
+
+@code {
+    private ProductResponseDto? productResponse;
+
+    //Hàm tự gọi khi giao diện được khởi tạo
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+    }
+
+
+
+
+
+
+    private async Task GetData()
+    {
+        var response = await _httpClient.GetFromJsonAsync<ProductResponseDto>("https://shop.cyberlearn.vn/api/Product");
+        
+        //Gọi api từ server chứa data
+        productResponse = response;
+
+        Console.WriteLine(@$"data: {JsonSerializer.Serialize(response)}");
+    }
+
+
+
+}

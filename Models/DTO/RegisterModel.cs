@@ -9,9 +9,18 @@ using System.ComponentModel.DataAnnotations;
 
 
 
-using System.ComponentModel.DataAnnotations;
+using static System.Net.WebRequestMethods;
 
 public class RegisterModel{
+    // private readonly HttpClient _httpClient;
+
+
+    // RegisterModel(HttpClient httpClient)
+    // {
+    //     _httpClient = httpClient;
+    // }
+
+
     [Required(ErrorMessage = "Username is required")]
     public string Username { get; set; }
 

@@ -1,0 +1,34 @@
+<div class="row">
+    @foreach (SanPhamDTO sp in products)
+    {
+        <div class="col-md-4">
+            <SanPham sp="sp" eventXemChiTiet="eventXemChiTiet" />
+        </div>
+    }
+</div>
+
+
+@code{
+    public List<SanPhamDTO> products = new List<SanPhamDTO>()
+    {
+        new SanPhamDTO() { id = 1, name = "Product 1",image ="/img/black-car.jpg", price = 100 },
+        new SanPhamDTO() { id = 2, name = "Product 2", image ="/img/steel-car.jpg", price = 200 },
+        new SanPhamDTO() { id = 3, name = "Product 3", image ="/img/red-car.jpg", price = 300 }
+    };
+
+    [Parameter]
+    public EventCallback<SanPhamDTO> eventXemChiTiet { get; set; }
+
+
+    public void XoaXe(int soXeCanXoa)
+    {
+        SanPhamDTO spCanXoa = products.SingleOrDefault(sp => sp.id == soXeCanXoa);
+        if (spCanXoa != null)
+        {
+            products.Remove(spCanXoa);
+        }
+        StateHasChanged(); //Load lại giao diện chủ động 
+    }
+
+}
+

@@ -1,0 +1,55 @@
+@page "/child-component"
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Dynamic Notification List</h5>
+
+        <ul class="list-group">
+            @if (listNotify != null)
+            {
+                @foreach (var notify in listNotify)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @notify
+                        <button class="btn btn-danger btn-sm">Dismiss</button>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public List<string> listNotify { get; set; }
+    
+    //Tạo bản sao để so sánh với lần trước
+    private List<string> previousListNotify = new List<string>();
+    
+    
+    protected override bool ShouldRender()
+    {
+        //Xử lý so sánh để biết dữ liệu đầu nó bị thay đổi thì return true ngược lại dữ liệu vào giống dữ liệu cũ thì return false
+        if (listNotify == null)
+        {
+            return false;
+        }
+        //Kiểm tra nếu dữ liệu đầu vào khác với dữ liệu lần trước thì sẽ cho component render lại đồng thời cập nhật lại previousListNotify
+
+        if(!Enumerable.SequenceEqual(previousListNotify, listNotify))
+        {
+        previousListNotify = new List<string>(listNotify);
+
+            return true;
+        }
+        return false;
+
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("Component child render");
+    }
+}

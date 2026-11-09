@@ -1,0 +1,56 @@
+@page "/parent-component"
+
+<div class="container py-3">
+    <h3>Parent Component</h3>
+
+    <div class="row g-3 align-items-start">
+        <!-- Static Card -->
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Static Card</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Fixed Information</h6>
+                    <p class="card-text">This is a static card that does not change.</p>
+                    <a href="#" class="card-link">Learn More</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Child Component: Dynamic Notification List -->
+        <div class="col-md-9">
+            <ChildComponent listNotify="notifications" />
+        </div>
+    </div>
+
+    <!-- Thêm notification -->
+    <div class="input-group my-3">
+        <input type="text" class="form-control" placeholder="Nhập nội dung notification..." @bind="newNotification" />
+        <button class="btn btn-primary" @onclick="AddNotification">Add Notification</button>
+    </div>
+
+    <!-- Render lại parent -->
+    <button class="btn btn-outline-dark btn-sm mt-3" @onclick="IncrementRenderCount">Render parent (@renderCount)</button>
+</div>
+
+
+
+
+@code {
+    private int renderCount = 0;
+    private string newNotification;
+
+    private List<string> notifications = new List<string>() { "cybersoft notify (1)" ,"cybersoft notify (2)", "cybersoft notify (3)" };
+
+    private void IncrementRenderCount()
+    {
+        renderCount++;
+    }
+    
+    private void AddNotification()
+    {
+        notifications.Add(newNotification);
+        Console.WriteLine($"Added notification: {JsonSerializer.Serialize(notifications)} ");
+        newNotification = "";
+    }
+
+}

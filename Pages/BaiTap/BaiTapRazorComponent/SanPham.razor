@@ -1,0 +1,25 @@
+
+
+<div class="card">
+
+    <img src="@sp.image" class="card-img-top" alt="@sp.name" />
+    <div class="card-body">
+        <h5 class="card-title">@sp.name</h5>
+        <p class="card-text">Giá: @sp.price</p>
+        <button @onclick=@(() => XemChiTiet(sp)) class="btn btn-primary">Xem chi tiết</button>
+        <NavLink class="nav-link" href="@($"/detail-prod/{sp.id}")">Xem chi tiết</NavLink>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public SanPhamDTO sp { get; set; }
+    [Parameter]
+    public EventCallback<SanPhamDTO> eventXemChiTiet { get; set; }
+
+    private void XemChiTiet(SanPhamDTO spClick)
+    {
+        eventXemChiTiet.InvokeAsync(spClick);
+    }
+}

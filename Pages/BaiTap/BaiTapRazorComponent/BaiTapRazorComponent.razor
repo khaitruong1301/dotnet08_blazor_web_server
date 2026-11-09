@@ -1,0 +1,44 @@
+@page "/baitap-razor-component"
+
+<div class="container">
+    <h3>Bai Tap Razor Component</h3>
+    <DanhSachSanPham @ref="danhSachSanPham" eventXemChiTiet="xemChiTiet" />
+
+    <h3>Chi tiét sản phẩm</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@sanPhamChiTiet.image" alt="@sanPhamChiTiet.name" class="img-fluid w-100" />
+        
+        </div>
+        <div class="col-md-4">
+            <p>Tên phẩm: @sanPhamChiTiet.name</p>
+            <p>Id sản phẩm: @sanPhamChiTiet.id</p>
+            <p>Giá sản phẩm: @sanPhamChiTiet.price</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input class="form-control" placeholder="Nhập vào số xe cần xoá" @bind="soXeCanXoa" />
+        <button class="btn btn-danger" @onclick="XoaXe">Xoá</button>
+    </div>
+</div>
+
+
+@code {
+    private DanhSachSanPham danhSachSanPham;
+    public int soXeCanXoa { get; set; } 
+  
+    private SanPhamDTO sanPhamChiTiet =  new SanPhamDTO() { id = 1, name = "Product 1",image ="/img/black-car.jpg", price = 100 };
+    public void XoaXe()
+    {
+        // Logic to delete a car goes here
+        danhSachSanPham.XoaXe(soXeCanXoa);
+
+    }
+
+    private void xemChiTiet(SanPhamDTO spClick)
+    {
+        sanPhamChiTiet = spClick;
+    }
+
+}

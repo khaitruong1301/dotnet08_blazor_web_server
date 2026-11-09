@@ -1,0 +1,36 @@
+
+
+
+<div class="card">
+    <img src="https://i.pravatar.cc?u=@prod.id" />
+    <div class="card-body">
+        <h5 class="card-title">@prod.name</h5>
+        <p class="card-text">Price: $@prod.price</p>
+        <a data-bs-toggle="modal" data-bs-target="#productModal"  href="#" class="btn btn-primary" @onclick="handleClick">Buy Now</a>
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public ProductInfoModal prod { get; set; }
+
+    [Parameter]
+    public EventCallback<string> eventViewDetail { get; set; }
+
+    [Parameter]
+    
+    public EventCallback<ProductInfoModal> eventShowProduct { get; set; }
+
+
+    private async Task handleClick()
+    {   
+        //Khi click vào nút button buy now thì sử dụng eventViewDetail để gửi tên sản phẩm lên component cha
+        
+        await eventViewDetail.InvokeAsync(prod.name);
+        await eventShowProduct.InvokeAsync(prod);
+    }
+
+
+}
