@@ -13,6 +13,8 @@ builder.Services.AddHttpClient();
 
 //DI service quản lý state
 builder.Services.AddScoped<CounterStateService>();
+builder.Services.AddScoped<CarStateService>();
+builder.Services.AddScoped<BurgerStateService>();
 
 
 

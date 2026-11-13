@@ -1,0 +1,28 @@
+@inject CarStateService _carStateService;
+@implements IDisposable
+
+<div class="card">
+    <img src="@carModal.ImageUrl" alt="@carModal.Name" class="w-100"  />
+    <div class="card-body">
+        <h5 class="card-title">@carModal.Name</h5>
+        <p class="card-text">Giá: @carModal.Price</p>
+        <button data-bs-toggle="modal" data-bs-target="#modal-car" class="btn btn-primary" @onclick="@(() => _carStateService.ViewDetail(carModal))">Xem Chi Tiết</button>
+        </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public CarDTO carModal { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _carStateService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        _carStateService.OnChange -= StateHasChanged;
+    }
+}

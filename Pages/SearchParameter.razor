@@ -1,0 +1,81 @@
+@page "/searchparameter"
+
+@inject NavigationManager NavigationManager
+
+@inject HttpClient _httpClient
+
+
+<h3>Search Parameter</h3>
+<div class="container">
+    <h3>Search Product</h3>
+    <form onsubmit="return false;" class="form-group">
+        <input type="text" class="form-control w-25 d-inline" @bind="keyword" placeholder="Enter keyword" />
+        <button class="btn btn-primary" @onclick="Search">Search</button>
+    </form>
+    <h3>Kết quả tìm kiếm</h3>
+    <div class="row">
+        @foreach (ProductDto product in products)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img class="card-img-top" src="@product.Image" alt="@product.Name" />
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    
+</div>
+
+
+
+@code {
+    public string keyword { get; set; }
+    public List<ProductDto> products { get; set; } = new List<ProductDto>();
+    public async Task Search()
+    {
+        // Implement search logic here
+        NavigationManager.NavigateTo($"/searchparameter?keyword={keyword}&abc=xyz");
+        await LoadProducts();
+    }
+
+    public async Task LoadProducts()
+    {
+        var response = await
+_httpClient.GetFromJsonAsync<ProductResponseDto>($"https://apistore.cybersoft.edu.vn/api/Product?keyword={keyword}");
+        if (response != null)
+        {
+            products = response.Content;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Khi người dùng get từ url thì keyword cập nhật
+        Uri? uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("keyword", out var kw))
+        {
+            keyword = kw;
+        }
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("abc", out var abc))
+        {
+            // Handle the "abc" query parameter if needed
+            Console.WriteLine($"abc: {abc}");
+        }
+        await LoadProducts();
+    }
+
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        //Dựa vào keyword call api load dữ liệu tương ứng
+        await LoadProducts();
+    }
+
+
+}

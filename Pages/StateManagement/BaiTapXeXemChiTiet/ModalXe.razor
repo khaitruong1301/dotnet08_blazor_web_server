@@ -1,0 +1,36 @@
+@inject CarStateService _carStateService;
+@implements IDisposable
+
+
+
+<div class="modal fade" id="modal-car" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Car info</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="@_carStateService.CarDetail.ImageUrl" alt="@_carStateService.CarDetail.Name" class="w-100" />
+        <p>Tên xe: @_carStateService.CarDetail.Name</p>
+        <p>Giá: @_carStateService.CarDetail.Price</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        _carStateService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        _carStateService.OnChange -= StateHasChanged;
+    }
+}

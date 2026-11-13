@@ -1,0 +1,30 @@
+
+@inject CarStateService _carStateService;
+@implements IDisposable
+
+<div class="row">
+    @foreach (CarDTO item in _carStateService.lstCar)
+    {
+        <div class="col-3">
+            <CardXe carModal="item" />
+        </div>
+    }
+</div>
+
+
+
+
+@code {
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        _carStateService.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        _carStateService.OnChange -= StateHasChanged;
+    }
+
+
+}

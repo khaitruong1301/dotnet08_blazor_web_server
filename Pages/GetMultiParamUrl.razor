@@ -1,0 +1,32 @@
+@page "/getmultiparamurl/{category}/{id}"
+
+
+
+
+
+<div class="container">
+    <h3>Category: @category</h3>
+    <h3>ID: @id</h3>
+    <h3>Keyword: @keyword</h3>
+    <h3>Name: @name</h3>
+</div>
+
+@code {
+    [Parameter]
+    public string category { get; set; }
+
+    [Parameter]
+    public string id { get; set; }
+    [SupplyParameterFromQuery(Name = "keyword")]
+    public string? keyword { get; set; }
+
+        [SupplyParameterFromQuery(Name = "name")]
+    public string? name { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+        {
+            Console.WriteLine($"Category: {category}, ID: {id}, Keyword: {keyword}");
+
+        }
+}
