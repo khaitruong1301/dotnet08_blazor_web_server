@@ -1,0 +1,46 @@
+@page "/addstore"
+@inject StoreStateService _storeService
+@inject NavigationManager _navigationManager
+
+@implements IDisposable
+<div class="container">
+    <h3>Add new store</h3>
+    <EditForm Model="_storeService.NewStore" OnValidSubmit="handleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <InputText id="name" class="form-control" @bind-Value="@_storeService.NewStore.name" />
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Address</label>
+            <InputText id="description" class="form-control" @bind-Value="@_storeService.NewStore.description" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Store</button>
+    </EditForm>
+
+</div>
+
+
+@code {
+    private async Task handleValidSubmit()
+    {
+        await _storeService.AddStoreApi();
+        _navigationManager.NavigateTo("/getAllStore");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _storeService.OnChange += StateHasChanged;
+    }
+
+
+
+    public void Dispose()
+    {
+        _storeService.OnChange -= StateHasChanged;
+    }
+}

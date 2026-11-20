@@ -1,0 +1,92 @@
+@page "/getallstore"
+@inject StoreStateService _storeService
+@inject NavigationManager _navigationManager
+@implements IDisposable
+<div class="container">
+
+
+    
+    <h3>List store</h3>
+    <div class="form-group">
+        <input type="text" class="form-control my-2 w-50 d-inline" placeholder="Search..." @bind="@keyword" /> <button class="btn btn-primary mx-2" @onclick="Search">Search</button>
+    </div>
+    <NavLink href="/addstore" class="btn btn-primary mb-3">Add new store</NavLink>
+        <table class="table">
+            <thead>
+               
+                <tr>
+                    <th>Store ID</th>
+                    <th>Store Name</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Deleted</th>
+                        
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(StoreDTO item in _storeService.Stores){
+                    <tr>
+                        <td>@item.id</td>
+                        <td>
+                           <NavLink href=@(@$"/getstorebyid/{item.id}")>@item.name</NavLink>
+
+                        </td>
+                        <td>@item.latitude - @item.longtitude</td>
+                        <td>@item.description</td>
+                        <td><img width="50" height="50" alt="@item.name"  src="@item.image" /></td>
+                        <td>@item.deleted</td>
+                        <td>
+                            <NavLink href=@(@$"/editstore/{item.id}")>Edit</NavLink>
+                            <NavLink href=@(@$"/deletestore/{item.id}")>Delete</NavLink>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+</div>
+
+@code {
+
+    [SupplyParameterFromQuery(Name = "keyword")]
+    public string keyword {get;set;} = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _storeService.OnChange += StateHasChanged;
+        if (!string.IsNullOrEmpty(keyword))
+        {
+            await _storeService.SearchStoreApi(keyword);
+        }
+        else
+        {
+            await _storeService.GetAllStoreApi();
+        }
+    }
+    
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        if (!string.IsNullOrEmpty(keyword))
+        {
+            await _storeService.SearchStoreApi(keyword);
+        }
+        else
+        {
+            await _storeService.GetAllStoreApi();
+        }
+    }
+
+
+    public void Dispose()
+    {
+        _storeService.OnChange -= StateHasChanged;
+    }
+
+    private async Task Search()
+    {
+        _navigationManager.NavigateTo($"/getallstore?keyword={keyword}");
+    }
+}

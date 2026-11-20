@@ -1,0 +1,35 @@
+@page "/getstorebyid/{id}"
+@inject StoreStateService _storeService
+@implements IDisposable
+
+<div class="container">
+    <h3>Store Details</h3>
+    <p>ID: @_storeService.StoreDetail.id</p>
+    <p>Name: @_storeService.StoreDetail.name</p>
+    <p>Address: @_storeService.StoreDetail.description</p>
+    <NavLink href="/getallstore">Back to Stores</NavLink>
+    
+</div>
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _storeService.OnChange += StateHasChanged;
+        await _storeService.GetStoreByIdApi(id);
+    }
+
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        await _storeService.GetStoreByIdApi(id);
+    }
+
+    public void Dispose()
+    {
+        _storeService.OnChange -= StateHasChanged;
+    }
+}

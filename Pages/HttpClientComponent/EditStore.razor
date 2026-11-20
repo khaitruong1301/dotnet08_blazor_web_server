@@ -1,0 +1,52 @@
+@page "/editstore/{id}"
+@inject StoreStateService _storeService
+@inject NavigationManager _navigationManager
+
+<div class="container">
+    <h3>Edit Store</h3>
+    <EditForm Model="_storeService.StoreDetail" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <InputText id="name" class="form-control" @bind-Value="_storeService.StoreDetail.name" />
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <InputText id="description" class="form-control" @bind-Value="_storeService.StoreDetail.description" />
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public string id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _storeService.OnChange += StateHasChanged;
+        await _storeService.GetStoreByIdApi(id);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        //Gọi api edit
+        await _storeService.UpdateStore();
+        _navigationManager.NavigateTo("/getallstore");
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        await _storeService.GetStoreByIdApi(id);
+    }
+
+    public void Dispose()
+    {
+        _storeService.OnChange -= StateHasChanged;
+    }
+}

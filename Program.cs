@@ -9,12 +9,28 @@ builder.Services.AddServerSideBlazor();
 //Thư viện gọi api 
 builder.Services.AddHttpClient();
 
+builder.Services.AddHttpClient(Helper.apiStore, client =>
+{
+    client.BaseAddress = new Uri("https://apistore.cybersoft.edu.vn/api/");
+    client.Timeout = TimeSpan.FromMinutes(5);
+});
+
+
+// builder.Services.AddHttpClient("apiStore", client =>
+// {
+//     client.BaseAddress = new Uri("https://apistore.cybersoft.edu.vn/api");
+//     client.Timeout = TimeSpan.FromMinutes(5);
+// });
+
+
 
 
 //DI service quản lý state
 builder.Services.AddScoped<CounterStateService>();
 builder.Services.AddScoped<CarStateService>();
 builder.Services.AddScoped<BurgerStateService>();
+//Khai báo service state store
+builder.Services.AddScoped<StoreStateService>();
 
 
 
